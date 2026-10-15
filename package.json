@@ -1,0 +1,62 @@
+{
+  "name": "duelke",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server/index.ts",
+    "build": "pnpm typecheck && vite build && mkdir -p dist/server/migrations && cp src/server/db/migrations/*.sql dist/server/migrations/ && esbuild src/server/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server/index.js && esbuild src/server/db/migrate.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server/migrate.js && esbuild src/server/db/status.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server/status.js && esbuild src/server/scripts/create-admin.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server/create-admin.js",
+    "start": "node dist/server/index.js",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "db:migrate": "tsx src/server/db/migrate.ts",
+    "db:status": "tsx src/server/db/status.ts",
+    "db:migrate:prod": "node dist/server/migrate.js",
+    "db:status:prod": "node dist/server/status.js",
+    "admin:create": "tsx src/server/scripts/create-admin.ts",
+    "admin:create:prod": "node dist/server/create-admin.js"
+  },
+  "dependencies": {
+    "chess.js": "^1.4.0",
+    "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "nodemailer": "^6.10.0",
+    "pg": "^8.13.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.13.4",
+    "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.11.11",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@types/supertest": "^6.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.24.2",
+    "jsdom": "26.1.0",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
+  }
+}
